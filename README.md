@@ -1,1 +1,1 @@
-# My todolist progect on react.js
+# My todolist project on react.js
