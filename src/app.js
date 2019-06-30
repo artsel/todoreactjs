@@ -12,6 +12,17 @@ class App extends Component{
 		this.state = {
 			tododata:todos
 		}
+		this.onDeleteItem = id => {
+			this.setState(({tododata}) => {
+				const idx = tododata.findIndex(el => el.id == id);
+				const newArray = [
+				...tododata.slice(0, idx),
+				...tododata.slice(idx + 1)
+				];
+				return {tododata:newArray};
+			});
+		};
+
 		this.triggerPropsLabel = (arr, id, propName) => {
 			const idx = arr.findIndex(el => el.id == id);
 			const oldItem = arr[idx];
@@ -24,16 +35,27 @@ class App extends Component{
 				return {tododata: this.triggerPropsLabel(tododata,id,"done")};
 			})
 		}
+
+		this.onImportantClick = id => {
+			this.setState(({tododata}) => {
+				return {tododata: this.triggerPropsLabel(tododata,id,"important")};
+			});
+		}
 	}
 	render(){
 		const {tododata} = this.state;
+		const todoLength = tododata.length;
+		const todoDoned = tododata.filter(el => el.done).length;
+		const todoDoit = todoLength - todoDoned;
 		return(
 			<div className="app">
-			<Header doned='5' doit='3' />
+			<Header todoLength={todoLength} doned={todoDoned} doit={todoDoit} />
 			<Search />
 			<TodoList 
 				todoprops={tododata}
 				onLabelClick={this.onLabelClick}
+				onImportantClick={this.onImportantClick}
+				onDeletedClick={this.onDeleteItem}
 			 />
 			</div>
 			)
