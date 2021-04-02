@@ -1,0 +1,27 @@
+.done {
+	text-decoration: line-through;
+} 
+
+.important {
+	color:brown;
+}
+
+.todo-item {
+  font-size: 10px;
+  width: 310px;
+  height: 42px;
+  padding: 0px;
+  margin: 0px;
+  background-color: #eeeeee;
+}
+
+.todo-list-item {
+  width: 210px;
+  display: inline-block;
+  font-size: 14px;
+  padding: 3px;
+}
+
+.todo-list-item:hover {
+    background-color: #ffffff;
+}

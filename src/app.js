@@ -5,12 +5,25 @@ import Header from './components/Header';
 import Search from './components/Search';
 import {todos} from './db/todos';
 import TodoList from './components/TodoList';
+import FeedBack from './components/FeedBack';
 
 class App extends Component{
 	constructor(){
 		super();
 		this.state = {
-			tododata:todos
+			tododata:todos,
+			term: '',
+			todoFilter: "all"
+		}
+		this.onSearchChange = text => {
+			this.setState({term:text});
+		}
+		this.onSearch= (db,text) =>{
+			if (text == "") return db;
+			return db.filter(item => {
+				return item.title.toLowerCase().indexOf(text.toLowerCase()) > -1;
+			});
+
 		}
 		this.onDeleteItem = id => {
 			this.setState(({tododata}) => {
@@ -43,20 +56,24 @@ class App extends Component{
 		}
 	}
 	render(){
-		const {tododata} = this.state;
+		const {tododata,term,todoFilter} = this.state;
+		const readyDB = this.onSearch(tododata, term);
 		const todoLength = tododata.length;
 		const todoDoned = tododata.filter(el => el.done).length;
 		const todoDoit = todoLength - todoDoned;
 		return(
 			<div className="app">
 			<Header todoLength={todoLength} doned={todoDoned} doit={todoDoit} />
-			<Search />
+			<Search 
+				placeholder="Введите текст"
+				onSearchChange={this.onSearchChange} />
 			<TodoList 
-				todoprops={tododata}
+				todoprops={readyDB}
 				onLabelClick={this.onLabelClick}
 				onImportantClick={this.onImportantClick}
 				onDeletedClick={this.onDeleteItem}
 			 />
+			 <FeedBack />
 			</div>
 			)
 	}
